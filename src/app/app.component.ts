@@ -3,7 +3,6 @@ import {select, Store} from '@ngrx/store';
 import {Observable} from 'rxjs';
 import { AppState } from './reducers';
 import { Logout } from './auth/auth.actions';
-import { map } from 'rxjs/operators';
 import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
 import { Router } from '@angular/router';
 
@@ -12,6 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent implements OnInit {
 
   isLoggedIn$: Observable<boolean>;
@@ -57,7 +57,8 @@ export class AppComponent implements OnInit {
 
     logout() {
       this.store.dispatch(new Logout());
-      this.router.navigateByUrl('/login');
+      // Moved to the Effets file
+      // this.router.navigateByUrl('/login');
     }
 
 
