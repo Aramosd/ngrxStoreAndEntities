@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {select, Store} from "@ngrx/store";
-import {Observable} from "rxjs";
+import {select, Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
 import { AppState } from './reducers';
 import { Logout } from './auth/auth.actions';
+import { map } from 'rxjs/operators';
+import { isLogged, isLoggedOut } from './auth/auth.selectors';
 
 @Component({
   selector: 'app-root',
@@ -11,14 +13,44 @@ import { Logout } from './auth/auth.actions';
 })
 export class AppComponent implements OnInit {
 
+  isLoggedIn$: Observable<boolean>;
+  isLoggedOut$: Observable<boolean>;
 
 
-    constructor(private store: Store<AppState>) {
-
-    }
+    constructor(private store: Store<AppState>) {    }
 
     ngOnInit() {
-
+      this.isLoggedIn$ = this.store
+        .pipe(
+          // THIS ELIMINATES DUPLICATE CALLLS
+          // SELECT, FILTERS THE FACT THAT LAST STATE IS NOT MODIFIED
+          select(isLogged)
+        );
+      this.isLoggedOut$ = this.store
+          .pipe(
+            select(isLoggedOut)
+          );
+      /*
+                OBSERVABLE COOL WAY
+          this.isLoggedIn$ = this.store
+            .pipe(
+              map(state => state.auth.loggedIn)
+            );
+          this.isLoggedOut$ = this.store
+              .pipe(
+                map(state => !state.auth.loggedIn)
+              );
+      */
+      /*
+              ORIGINAL SIMPLE WAY
+          this.store
+            .pipe(
+              map(state => state.auth.loggedIn)
+            )
+            .subscribe(loggedIn => console.log(loggedIn));
+          //  BEFORE ADDING map()
+          // .subscribe(state => console.log(state));
+      */
 
     }
 
