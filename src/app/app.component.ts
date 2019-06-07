@@ -4,7 +4,8 @@ import {Observable} from 'rxjs';
 import { AppState } from './reducers';
 import { Logout } from './auth/auth.actions';
 import { map } from 'rxjs/operators';
-import { isLogged, isLoggedOut } from './auth/auth.selectors';
+import { isLoggedIn, isLoggedOut } from './auth/auth.selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +18,14 @@ export class AppComponent implements OnInit {
   isLoggedOut$: Observable<boolean>;
 
 
-    constructor(private store: Store<AppState>) {    }
+    constructor(private store: Store<AppState>, private router: Router) {    }
 
     ngOnInit() {
       this.isLoggedIn$ = this.store
         .pipe(
           // THIS ELIMINATES DUPLICATE CALLLS
           // SELECT, FILTERS THE FACT THAT LAST STATE IS NOT MODIFIED
-          select(isLogged)
+          select(isLoggedIn)
         );
       this.isLoggedOut$ = this.store
           .pipe(
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
 
     logout() {
       this.store.dispatch(new Logout());
+      this.router.navigateByUrl('/login');
     }
 
 

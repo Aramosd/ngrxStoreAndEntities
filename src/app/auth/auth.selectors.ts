@@ -2,7 +2,7 @@ import { createSelector } from '@ngrx/store';
 
 export const selectAuthState = state => state.auth;
 
-export const isLogged = createSelector(
+export const isLoggedIn = createSelector(
     selectAuthState,
     //HERE GOES THE PROJECTOR
     (auth) => auth.loggedIn
@@ -10,6 +10,6 @@ export const isLogged = createSelector(
 
 export const isLoggedOut = createSelector(
     // HOW TO COMBINE SELECTORS :?
-    isLogged,
+    isLoggedIn,
     (loggedIn) => !loggedIn
 );
