@@ -38,3 +38,11 @@ export function coursesReducer(state = initialCoursesState, action: Action): Cou
       return state;
   }
 }
+
+// FOLLOWING COMMON RxJS CONVENTIONS WE WRITE SELECTORS FOR THE ADAPTERS AT THE BOTTOM
+export const {
+  selectAll,
+  selectEntities,
+  selectIds,
+  selectTotal
+} = adapter.getSelectors();

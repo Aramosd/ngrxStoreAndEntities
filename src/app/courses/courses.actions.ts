@@ -9,7 +9,9 @@ export enum CoursesActionTypes {
         AFTER THAT THE EVENT ITSELF !
    */
   CourseRequested = '[View Course Page] Course Requested',
-  CourseLoaded = '[Courses API] Course Loaded'
+  CourseLoaded = '[Courses API] Course Loaded',
+  AllCoursesRequested = '[Courses Card List] All Courses',
+  AllCoursesLoaded = '[Courses API] All Courses Loaded',
 }
 
 export class CourseRequested implements Action {
@@ -22,5 +24,16 @@ export class CourseLoaded implements Action {
   constructor (public payload: { course: Course }) {}
 }
 
+export class AllCoursesRequested implements Action {
+  readonly type = CoursesActionTypes.AllCoursesRequested;
+}
 
-export type CoursesActions = CourseRequested | CourseLoaded;
+export class AllCoursesLoaded implements Action {
+  readonly type = CoursesActionTypes.AllCoursesLoaded;
+  constructor (public payload: { courses: Course[] }) {}
+}
+
+export type CoursesActions = CourseRequested |
+  CourseLoaded |
+  AllCoursesRequested |
+  AllCoursesLoaded;
