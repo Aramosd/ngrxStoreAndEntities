@@ -22,6 +22,14 @@ export function authReducer(state = initialAuthState, action: AuthActions): Auth
       };
     }
     case AuthActionTypes.LogoutAction: {
+      /*
+              STUFF StoreFreeze HELPS US PREVENT
+
+              state.loggedIn = false;
+              state.user = undefined;
+
+              return state;
+      */
       return {
         loggedIn: false,
         user: undefined
