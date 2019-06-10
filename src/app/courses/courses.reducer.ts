@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Course } from './model/course';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
+import { CoursesActionTypes } from './courses.actions';
 
 /*
           WHY SHOULD WE USE ngrx/entity INSTEAD of this?
@@ -26,13 +27,13 @@ export interface CoursesState extends EntityState<Course> {
 */
 export const adapter: EntityAdapter<Course> = createEntityAdapter<Course>();
 
-export const initialState: CoursesState = {
+export const initialCoursesState: CoursesState = adapter.getInitialState();
 
-};
-
-export function reducer(state = initialState, action: Action): CoursesState {
+export function coursesReducer(state = initialCoursesState, action: Action): CoursesState {
   switch (action.type) {
-
+    case CoursesActionTypes.CourseLoaded: {
+      return adapter.addOne(action.payload.course, state);
+    }
     default:
       return state;
   }
