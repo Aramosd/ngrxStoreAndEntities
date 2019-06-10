@@ -3,6 +3,7 @@ import {Actions, Effect, ofType} from '@ngrx/effects';
 import {AuthActionTypes, Login, Logout} from './auth.actions';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import { defer, of } from 'rxjs';
 
 
 @Injectable()
@@ -24,6 +25,23 @@ export class AuthEffects {
 
     })
   );
+
+  /*
+          INITIALIZATION SIDE-EFFECT
+
+      defer, RxJS operator typically used to wait
+      for someone to susbcribe to the observable before
+      creating an observable
+  */
+  @Effect()
+  init$ = defer(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      return of(new Login(JSON.parse(userData)));
+    } else {
+      return of(new Logout());
+    }
+  });
 
   constructor(private actions$: Actions, private router: Router) { }
 }
