@@ -21,6 +21,7 @@ import {RouterStateSerializer, StoreRouterConnectingModule} from '@ngrx/router-s
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './reducers';
 import { AuthGuard } from './auth/auth.guard';
+import { CustomSerializer } from './shared/utils';
 
 
 const routes: Routes = [
@@ -54,7 +55,14 @@ const routes: Routes = [
         StoreModule.forRoot(reducers, { metaReducers }),
         // DO NOT FORGET WHEN REGISTERING ANY SideEffects !!
         EffectsModule.forRoot([]),
-        !environment.production ? StoreDevtoolsModule.instrument() : []
+        !environment.production ? StoreDevtoolsModule.instrument() : [],
+        // router = name of the router state in our NgRx state tree
+        // Router State contains a lot of info, we need to tell it to keep
+        // certain info in the router, for it we use a custom route serializer
+        StoreRouterConnectingModule.forRoot({
+            stateKey: 'router',
+            serializer: CustomSerializer
+        })
     ],
     providers: [],
     bootstrap: [AppComponent]
