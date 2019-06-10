@@ -1,14 +1,14 @@
 
 
 
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
-import {Course} from "../model/course";
-import {Observable} from "rxjs";
-import {CoursesService} from "./courses.service";
-import {AppState} from "../../reducers";
-import {select, Store} from "@ngrx/store";
-import {filter, first, tap} from "rxjs/operators";
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
+import {Course} from '../model/course';
+import {Observable} from 'rxjs';
+import {CoursesService} from './courses.service';
+import {AppState} from '../../reducers';
+import {select, Store} from '@ngrx/store';
+import {filter, first, tap} from 'rxjs/operators';
 
 
 
@@ -23,6 +23,12 @@ export class CourseResolver implements Resolve<Course> {
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Course> {
 
+        /*
+                Problems on this implementeation
+
+                Whenever we go back using the browser buttons we readch the backend
+                So multiple loads  of repetitive data result
+        */
         const courseId = route.params['id'];
 
         return this.coursesService.findCourseById(courseId);
