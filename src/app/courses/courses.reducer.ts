@@ -40,6 +40,14 @@ export function coursesReducer(state = initialCoursesState, action: CoursesActio
       //            AFTER REFACTOR
       return adapter.addAll(action.payload.courses, { ...state, allCoursesLoaded: true });
     }
+    case CoursesActionTypes.CourseSaved: {
+      /*
+                    upsertOne
+          INSERT IF DOESNT EXIST
+          UPDATE IF IT'S ALREADY THERE
+      */
+      return adapter.updateOne(action.payload.course, state);
+    }
     default:
       return state;
   }
