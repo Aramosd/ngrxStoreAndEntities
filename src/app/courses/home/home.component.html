@@ -4,6 +4,13 @@
     <h2 class="title">All Courses</h2>
 
     <div class="counters">
+        <!--
+            ONE OF THE ADVANTAGES OF THIS NOTATION:
+                THE OBSERVABLE IS AUTOMATICALLY UNSUBSCRIBED
+                WHENEVER THE COMPONENT IS DESTROYED
+
+                IT'S ALSO INTEGRATED WITH THE ChangeDetection.ONPUSH
+        -->
         <p>In Promo: {{promoTotal$ | async}}</p>
     </div>
 

@@ -1,7 +1,6 @@
-import { Action } from '@ngrx/store';
 import { Course } from './model/course';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { CoursesActionTypes } from './courses.actions';
+import { CoursesActionTypes, CoursesActions } from './courses.actions';
 
 /*
           WHY SHOULD WE USE ngrx/entity INSTEAD of this?
@@ -29,7 +28,7 @@ export const adapter: EntityAdapter<Course> = createEntityAdapter<Course>();
 
 export const initialCoursesState: CoursesState = adapter.getInitialState();
 
-export function coursesReducer(state = initialCoursesState, action: Action): CoursesState {
+export function coursesReducer(state = initialCoursesState, action: CoursesActions): CoursesState {
   switch (action.type) {
     case CoursesActionTypes.CourseLoaded: {
       return adapter.addOne(action.payload.course, state);
