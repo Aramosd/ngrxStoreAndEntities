@@ -2,24 +2,20 @@
 
 
 import {Request, Response} from 'express';
-import {LESSONS} from "./db-data";
-import {setTimeout} from "timers";
+import {LESSONS} from './db-data';
+import {setTimeout} from 'timers';
 
 
 
 export function searchLessons(req: Request, res: Response) {
 
     console.log('Searching for lessons ...');
-
-    /*
     const error = (Math.random() >= 0.5);
 
     if (error) {
-        console.log("ERROR loading lessons!");
+        console.log('ERROR loading lessons!');
         res.status(500).json({message: 'random error occurred.'});
-    }
-    else {
-    */
+    } else {
 
         const queryParams = req.query;
 
@@ -35,7 +31,7 @@ export function searchLessons(req: Request, res: Response) {
             lessons = lessons.filter(lesson => lesson.description.trim().toLowerCase().search(filter.toLowerCase()) >= 0);
         }
 
-        if (sortOrder == "desc") {
+        if (sortOrder == 'desc') {
             lessons = lessons.reverse();
         }
 
@@ -45,11 +41,8 @@ export function searchLessons(req: Request, res: Response) {
 
         setTimeout(() => {
             res.status(200).json({payload: lessonsPage});
-        },1000);
+        }, 1000);
 
-   // }
-
-
-
+    }
 
 }

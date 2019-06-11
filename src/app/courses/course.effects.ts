@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Actions, Effect, ofType} from '@ngrx/effects';
 import {AllCoursesLoaded, AllCoursesRequested, CourseActionTypes,
-  CourseLoaded, CourseRequested, LessonsPageRequested, LessonsPageLoaded} from './course.actions';
-import {throwError} from 'rxjs';
+  CourseLoaded, CourseRequested, LessonsPageRequested, LessonsPageLoaded, LessonsPageCancelled} from './course.actions';
+import {throwError, of} from 'rxjs';
 import {catchError, concatMap, exhaustMap, filter, map, mergeMap, withLatestFrom} from 'rxjs/operators';
 import {CoursesService} from './services/courses.service';
 import {AppState} from '../reducers';
@@ -43,11 +43,37 @@ export class CourseEffects {
     loadLessonsPage$ = this.actions$
       .pipe(
         ofType<LessonsPageRequested>(CourseActionTypes.LessonsPageRequested),
+        //            DONT DO THIS
+        /*
         mergeMap(({ payload }) => this.coursesService.findLessons(payload.courseId,
           payload.page.pageIndex,
           payload.page.pageSize)
         ),
-        map(lessons => new LessonsPageLoaded({ lessons }))
+         CATCH ERROR IN THE WONRG PLACE BECAUSE
+        WE WANT TO RECOVER THE OBSERVABLE FETCHED BY THE BACKEND
+        NOT THE OUTSIDE OBSERVABLE CHAIN !!!
+        map(lessons => new LessonsPageLoaded({ lessons })),
+        catchError(err => {
+          console.log('SOMETHING WENT WRONG', err);
+          this.store.dispatch(new LessonsPageCancelled());
+          return of([]);
+        }),
+            INSTEAD HOOK THE ERROR HANDLER IN THE INNER OBSERVABLE
+            THE API CALL !
+        */
+       mergeMap(({ payload }) => {
+        return this.coursesService.findLessons(payload.courseId,
+          payload.page.pageIndex,
+          payload.page.pageSize)
+            .pipe(
+              catchError((error) => {
+                console.log('SOMETHING WENT WRONG', error);
+                this.store.dispatch(new LessonsPageCancelled());
+                return of([]);
+              })
+            );
+       }),
+       map(lessons => new LessonsPageLoaded({ lessons })),
       );
 
   constructor(private actions$ :Actions, private coursesService: CoursesService,
