@@ -4,7 +4,7 @@ import { CourseActions, CourseActionTypes } from './courses/course.actions';
 import { Lesson } from './courses/model/lesson';
 
 export interface LessonsState extends EntityState<Lesson> {
-  // additional entities state properties
+  loading: boolean;
 }
 
 function sortByCourseAndSequenceNumber (l1: Lesson, l2: Lesson): number {
@@ -21,7 +21,9 @@ export const adapter: EntityAdapter<Lesson> = createEntityAdapter<Lesson>({
   sortComparer: sortByCourseAndSequenceNumber
 });
 
-export const initialLessonsState: LessonsState = adapter.getInitialState();
+export const initialLessonsState: LessonsState = adapter.getInitialState({
+  loading: false
+});
 
 export function lessonsReducer(
   state = initialLessonsState,
@@ -29,7 +31,16 @@ export function lessonsReducer(
 ): LessonsState {
   switch (action.type) {
     case CourseActionTypes.LessonsPageLoaded: {
-      return adapter.addMany(action.payload.lessons, state);
+      return adapter.addMany(action.payload.lessons, {
+        ...state,
+        loading: false
+      });
+    }
+    case CourseActionTypes.LessonsPageRequested: {
+      return {
+        ...state,
+        loading: true
+      };
     }
     default: {
       return state;
