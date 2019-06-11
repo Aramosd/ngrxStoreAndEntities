@@ -1,13 +1,25 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
-import { Lesson } from './lesson.model';
 import { LessonActions, LessonActionTypes } from './lesson.actions';
 import { CourseActions } from './courses/course.actions';
+import { Lesson } from './courses/model/lesson';
 
 export interface LessonsState extends EntityState<Lesson> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Lesson> = createEntityAdapter<Lesson>();
+function sortByCourseAndSequenceNumber (l1: Lesson, l2: Lesson): number {
+  const compare = l1.courseId - l2.courseId;
+
+  if (compare !== 0) {
+    return compare;
+  } else {
+    return l1.seqNo - l2.seqNo;
+  }
+}
+
+export const adapter: EntityAdapter<Lesson> = createEntityAdapter<Lesson>({
+  sortComparer: sortByCourseAndSequenceNumber
+});
 
 export const initialLessonsState: LessonsState = adapter.getInitialState();
 

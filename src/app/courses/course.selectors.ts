@@ -39,7 +39,6 @@ export const selectLessonsPage = (courseId: number, page: PageQuery) => createSe
   (allLessons) => {
     const start = page.pageIndex * page.pageSize,
       end = start + page.pageSize;
-
     return allLessons.filter(lesson => lesson.courseId === courseId)
       .slice(start, end);
   }

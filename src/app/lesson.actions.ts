@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Lesson } from './lesson.model';
+import { Lesson } from './courses/model/lesson';
 
 export enum LessonActionTypes {
   LoadLessons = '[Lesson] Load Lessons',
