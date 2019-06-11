@@ -68,7 +68,8 @@ export const coursesRoutes: Routes = [
         RouterModule.forChild(coursesRoutes),
         StoreModule.forFeature('courses', coursesReducer),
         EffectsModule.forFeature([CourseEffects]),
-        StoreModule.forFeature('lesson', fromLesson.reducer)
+        // PLUG THE NEW STATE FOR THE NEW FEATURE
+        StoreModule.forFeature('lessons', fromLesson.lessonsReducer)
     ],
     declarations: [HomeComponent, CoursesCardListComponent, CourseDialogComponent, CourseComponent],
     exports: [HomeComponent, CoursesCardListComponent, CourseDialogComponent, CourseComponent],
