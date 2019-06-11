@@ -36,14 +36,15 @@ export class HomeComponent implements OnInit {
 
         this.store.dispatch(new AllCoursesRequested());
 
-        const courses$ = this.store
-            .pipe(
-                select(selectAllCourses)
-            );
-
         /*
                     NO NEED FOR THESE SELECTION LOGIC TO BE PRESENT
                     AFTER WE DEFINE SELECTORS USING THE OOB ADAPTER
+
+
+                    const courses$ = this.store
+                        .pipe(
+                            select(selectAllCourses)
+                        );
 
                     this.beginnerCourses$ = courses$.pipe(
                         map(courses => courses.filter(course => course.category === 'BEGINNER') )

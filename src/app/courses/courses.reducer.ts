@@ -15,23 +15,30 @@ import { CoursesActionTypes, CoursesActions } from './courses.actions';
 */
 
 export interface CoursesState extends EntityState<Course> {
-
+  allCoursesLoaded: boolean;
 }
 
 /*
       tHEY MAKE AVAILABLE METHODS TO ACCESS SELECTORS SUCH AS
       -GetAll
-      
       WE CAN ALSO FETCH THE ORIGINAL STATE
 */
 export const adapter: EntityAdapter<Course> = createEntityAdapter<Course>();
 
-export const initialCoursesState: CoursesState = adapter.getInitialState();
+export const initialCoursesState: CoursesState = adapter.getInitialState({
+  allCoursesLoaded: false
+});
 
 export function coursesReducer(state = initialCoursesState, action: CoursesActions): CoursesState {
   switch (action.type) {
     case CoursesActionTypes.CourseLoaded: {
       return adapter.addOne(action.payload.course, state);
+    }
+    case CoursesActionTypes.AllCoursesLoaded: {
+      //            BEFORE REFACTOR
+      // return adapter.addAll(action.payload.courses, state);
+      //            AFTER REFACTOR
+      return adapter.addAll(action.payload.courses, { ...state, allCoursesLoaded: true });
     }
     default:
       return state;
