@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from "../model/course";
 import {Observable} from "rxjs";
 import {filter, map, tap, withLatestFrom} from "rxjs/operators";
@@ -7,11 +7,34 @@ import {AppState} from '../../reducers';
 import {select, Store} from '@ngrx/store';
 import {selectAllCourses} from '../course.selectors';
 import {AllCoursesRequested} from '../course.actions';
+
+/*
+                CHANGE DETECION AND REACTIVE EXTENSIONS
+  COMMON MISCONCEPTION
+  OnPush IS ONLY ABOUT THE COMPONETNS UPDATING THEMSELVES WHENEVER THE COMPONENT's @Input() CHANGES
+
+  ALSO
+  WHEN OBSERVABLE EMITS NEW VALUE AS LONG AS IT'S PLUGGED VIA THE async PIPE
+
+  DOESNT WORK
+  WHEN WE TRY TO MUTATE THE DATA DIRECTLY AT A COMPONENT LEVEL
+
+
+*/
 @Component({
     selector: 'home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css']
+    styleUrls: ['./home.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
+    /**
+     *  ONLY NEED TO CHANGE IT HERE
+     * 
+     * IF THERE ARE OTHER COMPONETNS THAT WOULD HAVE DIFFERENT DET. STRATEGY
+     * AS LONG AS ROOT COMPONENT USES OnPush ALL CHILD COMPONENTS INHERIT
+     * 
+     */
 })
+
 export class HomeComponent implements OnInit {
 
     promoTotal$: Observable<number>;
